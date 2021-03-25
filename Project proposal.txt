@@ -1,0 +1,23 @@
+﻿Don’t-quote-me
+OVERVIEW
+Users can browse through famous quotes and favorite, upvote, and downvote quotes. They can also discuss the quote and what it means in the comments of each quote. They can share a quote to their page as well.
+
+GOALS
+To create a new social media platform where the focus is on intellectual discussion.
+DEMOGRAPHIC
+Those who enjoy poetry, history, and intellectual discussion.
+
+
+SPECIFICATIONS
+I plan on using the They said so REST API for this application. It offers quotes of the day, random quotes, quote search functionality, and custom quotes. 
+
+My database will have a users, quote-favorite, quote-like, and quote-comment tables, user-quotes everything else ( famous - quotes) will be dependent on the API. Else, I could incorporate a quotes table and fill it with quotes from the api. 
+
+It is possible for errors to occur if the API edits or removes quotes, some simple error handling will solve that though.
+
+My app will have likes, comments, favorites, user posts, and possibly recommendations.
+
+The user will register and then see a page with popular authors to choose from, in which these authors will be used to curate recommended data. 
+The app then has a home page, where a user can pick from Curated-quotes(recommended), daily-quotes, and Discover. Each quote allows for comments, 
+favorites, and likes. Favorite quotes go to your user page for others to see, liked quotes are available for only the user. The user can also
+ create their own quotes, for which a slightly different color scheme is assigned, to differentiate between user and non-user quotes.
