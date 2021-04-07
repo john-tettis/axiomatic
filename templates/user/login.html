@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+{%set active_page='none'%}
+
+{% block content %}
+<div class="container">
+<h1 class="display-3 text-center">Login to your account</h1>
+    <form method='POST'>
+        {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != 'hidden'%}
+        <div class="input-group mb-3">
+       {{ field(placeholder=field.label.text, class="form-control") }}
+        </div>
+    {%endfor%}
+    <button class="btn btn-primary">Login</button>
+    </form>
+</div>
+
+
+{% endblock%}
