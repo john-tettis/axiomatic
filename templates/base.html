@@ -9,11 +9,21 @@
     <title>{% block title%}{% endblock %}</title>
 </head>
 <body>
+{% if g.poet %}
 {% set navigation_bar = [
     ('/', 'home', 'Home'),
     ('/quotes/', 'quotes', 'Quotes'),
-    ('/about/', 'about', 'About')
+    ('/about/', 'about', 'About'),
+    ('/account', 'account','Account')
 ] -%}
+{% else %}
+{% set navigation_bar = [
+    ('/', 'home', 'Home'),
+    ('/quotes/', 'quotes', 'Quotes'),
+    ('/about/', 'about', 'About'),
+] -%}
+
+{% endif %}
 
 {% set active_page = active_page|default('index') -%}
 
@@ -41,9 +51,6 @@
   </div>
   {% if g.poet%}
   <div class="nav-item">
-    <a href="/account">My Account</a>
-  </div>
-  <div class="nav-item">
     <a href="/logout">Logout</a>
   </div>
 
@@ -58,6 +65,15 @@
   {% endif %}
   
 </nav>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 {%block content%}
 {%endblock %}
     

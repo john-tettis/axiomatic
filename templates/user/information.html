@@ -1,0 +1,46 @@
+{% extends 'base.html'%}
+{%set active_page='account'%}
+
+{% block content %}
+<div class="container-md border rounded bg-light" style="min-height:50vh">
+    <h1 class="display-4 text-center">{{g.poet.username.capitalize()}}'s Account Information</h1>
+    <hr>
+    <div class="container-md m-5 justify-content-center">
+
+        <div class="row">
+            <div class="col">
+                Username:
+            </div>
+            <div class="col">
+                {{g.poet.username}}
+            </div>
+            <hr>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                Bio:
+            </div>
+            <div class="col">
+                {{g.poet.bio or 'No bio'}}
+            </div>
+            <hr>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                Profile image:
+            </div>
+            <div class="col">
+                <img src="{{g.poet.image_url}}" style='width:100px' alt="">
+                
+            </div>
+            <hr>
+        </div>
+        <a href="/account/edit" class="btn btn-primary mx-auto">Edit account information</a>
+    </div>
+    
+
+    
+</div>
+{% endblock%}

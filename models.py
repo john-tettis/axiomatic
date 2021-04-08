@@ -19,8 +19,9 @@ def connect_db(app):
 class Poet(db.Model):
     """User (poet) object"""
     __tablename__ ='poets'
+    id = db.Column(db.Integer, primary_key=True)
 
-    username = db.Column(db.String(30), primary_key=True)
+    username = db.Column(db.String(30), unique=True)
     
     email = db.Column(db.String, unique=True, nullable=False)
 
@@ -30,13 +31,13 @@ class Poet(db.Model):
 
     bio = db.Column(db.String(200), nullable = True)
 
-    likes = db.relationship('Likes')
+    likes = db.relationship('Like')
 
-    comments = db.relationship('Comments')
+    comments = db.relationship('Comment')
 
-    shares = db.relationship('Shares')
+    shares = db.relationship('Share')
 
-    quotes = db.relationship('Quotes')
+    quotes = db.relationship('Quote', backref = 'poet')
 
     @classmethod
     def signup(cls,username,password,email,image_url):
@@ -57,22 +58,28 @@ class Poet(db.Model):
         poet= cls.query.filter_by(username=username).first()
 
         if poet:
-            is_auth = bcrypt.check_password_hash(poet.hashed_password, password)
+            is_auth = bcrypt.check_password_hash(poet.hashed_+password, password)
             if is_auth:
                 return poet
 
         return False
 
 
-class Quotes(db.Model):
+class Quote(db.Model):
     """User-made quotes."""
     __tablename__ ='quotes'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    username = db.Column(db.String(30), db.ForeignKey('poets.username', ondelete='cascade'), nullable=False)
+    poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=False)
 
     content = db.Column(db.String(200), nullable=False)
+
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+
+    category = db.Column(db.String, nullable=True)
+
+    likes = db.relationship('Like')
 
 
 class TagCount(db.Model):
@@ -80,29 +87,31 @@ class TagCount(db.Model):
     
     tag_name = db.Column(db.String,primary_key=True)
 
-    username = db.Column(db.String(30), db.ForeignKey('poets.username', ondelete='cascade'), primary_key=True)
+    poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=False, primary_key=True)
 
     count = db.Column(db.Integer, nullable=False)
 
-class Shares(db.Model):
+class Share(db.Model):
     __tablename__ ='shares'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    username = db.Column(db.String(30), db.ForeignKey('poets.username',ondelete='cascade'))
+    poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=False)
 
     user_quote_id = db.Column(db.Integer, db.ForeignKey('quotes.id', ondelete='cascade'))
     
     api_quote_id = db.Column(db.Text)
 
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+
     is_user_quote = db.Column(db.Boolean)
 
-class Likes(db.Model):
+class Like(db.Model):
     __tablename__ ='likes'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    username = db.Column(db.String(30), db.ForeignKey('poets.username',ondelete='cascade'))
+    poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=False)
 
     user_quote_id = db.Column(db.Integer, db.ForeignKey('quotes.id', ondelete='cascade'))
     
@@ -111,18 +120,20 @@ class Likes(db.Model):
     is_user_quote = db.Column(db.Boolean)
 
 
-class Comments(db.Model):
+class Comment(db.Model):
     __tablename__ ='comments'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    username = db.Column(db.String(30), db.ForeignKey('poets.username',ondelete='cascade'))
+    poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=False)
 
     user_quote_id = db.Column(db.Integer, db.ForeignKey('quotes.id', ondelete='cascade'))
     
     api_quote_id = db.Column(db.Text)
 
     is_user_quote = db.Column(db.Boolean)
+
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
 
     

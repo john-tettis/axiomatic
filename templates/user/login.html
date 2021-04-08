@@ -4,6 +4,7 @@
 {% block content %}
 <div class="container">
 <h1 class="display-3 text-center">Login to your account</h1>
+<p>Don't have an account?<a href="/signup">Signup</a></p>
     <form method='POST'>
         {{ form.hidden_tag() }}
     {% for field in form if field.widget.input_type != 'hidden'%}
@@ -11,7 +12,12 @@
        {{ field(placeholder=field.label.text, class="form-control") }}
         </div>
     {%endfor%}
-    <button class="btn btn-primary">Login</button>
+    {% for field in form.errors %}
+    {%for error in form.errors[field]%}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+          {% endfor %} <br>
+    <button class="btn btn-primary mt-3">Login</button>
     </form>
 </div>
 

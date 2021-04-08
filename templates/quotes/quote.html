@@ -1,0 +1,25 @@
+
+{% if 'author' in quote%}
+<div class="card bg-light p-2 my-1 " style='width:20rem'>
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+        <p>{{quote.content}}</p>
+        <footer class="blockquote-footer">
+            <cite title="Source Title"><a href="https://www.google.com/search?q={{quote.author}}">{{quote.author}}</a></cite>
+        </footer>
+        </blockquote>
+    </div>
+</div> 
+{% else%}
+<div class="card bg-light" style='width:20rem'>
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+        <p>{{quote.content}}</p>
+        <footer class="blockquote-footer">
+            <cite title="Source Title"><a href="/poets/{{quote.poet_id}}">{{quote.poet.username}}</a></cite>
+            <img class='border'src="{{quote.poet.image_url}}" alt="profile-image" style='height:30px; border-radius:50%'>
+        </footer>
+        </blockquote>
+    </div>
+</div>
+{% endif %}

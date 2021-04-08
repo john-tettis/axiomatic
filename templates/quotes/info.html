@@ -1,0 +1,9 @@
+{% extends 'base.html'%}
+{%set active_page='quotes'%}
+
+{% block content %}
+<div class="container-fluid d-flex justify-content-center">
+    {% include '/quotes/quote.html' %}
+</div>
+
+{% endblock%}

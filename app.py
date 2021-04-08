@@ -2,8 +2,9 @@ from flask import Flask, render_template, request, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
-from models import db, connect_db, Poet
-from forms import SignupForm, LoginForm
+from models import db, connect_db, Poet, Quote
+from forms import SignupForm, LoginForm, EditAccountForm, QuoteForm
+from request import retrieve_quotes
 
 
 
@@ -33,7 +34,7 @@ def add_user_to_g():
     """Login poet to global variable"""
 
     if CURR_POET in session:
-        g.poet = Poet.query.get(session[CURR_POET])
+        g.poet = Poet.query.filter_by(username = session[CURR_POET]).first()
 
     else:
         g.poet = None
@@ -58,6 +59,9 @@ def show_homepage():
     else:
         return render_template('home_anon.html')
 
+
+# user routes
+# ************************************************************************************
 @app.route('/signup', methods=['GET','POST'])
 def signup():
 
@@ -81,6 +85,9 @@ def signup():
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
+    if g.poet:
+        flash("you are already logged in!")
+        return redirect('/')
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -91,5 +98,73 @@ def login():
         if poet:
             do_login(poet)
             return redirect('/')
+        else:
+            form.username.errors.append('Invalid username or password')
         
     return render_template('/user/login.html', form = form)
+@app.route('/logout')
+def logout():
+    do_logout()
+    flash('Logged out')
+    return redirect('/')
+
+@app.route('/account')
+def account_info():
+    if not g.poet:
+        raise
+        flash('You must login to access this page!')
+        return redirect('/')
+    else:
+        return render_template('/user/information.html')
+    
+@app.route('/account/edit', methods = ['GET','POST'])
+def account_edit():
+    if not g.poet:
+        flash('You must login to access this page!')
+        return redirect('/')
+    else:
+        form = EditAccountForm(obj = g.poet)
+
+        if form.validate_on_submit():
+            poet = Poet.query.filter_by(username=g.poet.username).first()
+            try:
+                poet.username = form.username.data
+                poet.email = form.email.data
+                poet.bio = form.bio.data
+                poet.image_url = form.image_url.data
+                db.session.add(poet)
+                db.session.commit()
+                do_login(poet)
+                return redirect('/account')
+            except IntegrityError:
+                flash('Oops, something went wrong...')
+                return redirect('/')
+        return render_template('/user/edit.html', form= form)
+    
+# Quote routes
+# **************************************************************************************************
+
+@app.route('/quotes')
+def display_quotes():
+    filt= request.args.get('f','famous')
+    quotes = retrieve_quotes(filt)
+    return render_template('/quotes/quotes.html', quotes = quotes)
+
+@app.route('/quotes/new', methods=['GET','POST'])
+def new_quotes():
+
+    form = QuoteForm()
+
+    if form.validate_on_submit():
+        quote = Quote(content = form.content.data, poet_id = g.poet.id)
+        db.session.add(quote)
+        db.session.commit()
+        return redirect(f'/quotes/{quote.id}')
+    else:
+        return render_template('quotes/new.html', form=form)
+
+@app.route('/quotes/<int:id>')
+def display_quote(id):
+    quote = Quote.query.get_or_404(id)
+    return render_template('quotes/info.html', quote = quote)
+
