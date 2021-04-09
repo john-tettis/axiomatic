@@ -6,14 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <title>{% block title%}{% endblock %}</title>
 </head>
 <body>
 {% if g.poet %}
 {% set navigation_bar = [
     ('/', 'home', 'Home'),
-    ('/quotes/', 'quotes', 'Quotes'),
-    ('/about/', 'about', 'About'),
+    ('/quotes', 'quotes', 'Quotes'),
+    ('/about', 'about', 'About'),
     ('/account', 'account','Account')
 ] -%}
 {% else %}
@@ -67,15 +69,23 @@
 </nav>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
-    <ul class=flashes>
     {% for message in messages %}
-      <li>{{ message }}</li>
+     <div class="container-fluid bg-primary">
+       <p class="mx-auto text-white">
+        {{message}}
+       </p>
+     </div>
     {% endfor %}
-    </ul>
   {% endif %}
 {% endwith %}
 {%block content%}
 {%endblock %}
-    
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+ integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+    <script src="/static/js/app.js"></script>
 </body>
 </html>

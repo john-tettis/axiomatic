@@ -37,10 +37,24 @@
             </div>
             <hr>
         </div>
-        <a href="/account/edit" class="btn btn-primary mx-auto">Edit account information</a>
+        <a href="/account/edit" class="btn btn-primary">Edit account information</a>
     </div>
-    
-
-    
+    <div class="container-fluid  border p-0 rounded mt-4">
+        <div class="container-fluid" style='height:30px'>
+            <p class="d-inline mr-2">Show me:</p>
+            <a href="/account?f=likes" class="badge badge-success">My Likes</a>
+            <a href="/account?fluid=own" class="badge badge-primary">My Quotes</a>
+            <a href="/account?f=shares" class="badge badge-secondary">My Shares</a>
+        </div>
+        <div class="container-fluid border">
+            <div class="row">
+                {% for quote in quotes %}
+                <div class="col justify-content-center">
+                    {% include '/quotes/quote.html' %}
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock%}

@@ -26,7 +26,7 @@ class EditAccountForm(FlaskForm):
 
     email = StringField('Email',[DataRequired('Email cannot be empty.'), Email('Please choose a valid email.')])
     
-    bio = TextAreaField('Bio', [Length(max=200)])
+    bio = TextAreaField('Bio', [Length(max=200, message='Bio must be less than 200 characters.')])
 
     image_url = StringField('Image URL', [URL('Must be a valid url.'), Optional()])
 

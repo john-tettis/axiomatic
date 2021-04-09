@@ -2,9 +2,9 @@ from flask import Flask, render_template, request, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
-from models import db, connect_db, Poet, Quote
+from models import db, connect_db, Poet, Quote, Share
 from forms import SignupForm, LoginForm, EditAccountForm, QuoteForm
-from request import retrieve_quotes
+from request import retrieve_quotes, add_fam_like, add_poet_like, repost_fam, repost_user, get_user_quotes
 
 
 
@@ -111,11 +111,12 @@ def logout():
 @app.route('/account')
 def account_info():
     if not g.poet:
-        raise
         flash('You must login to access this page!')
         return redirect('/')
     else:
-        return render_template('/user/information.html')
+        filt = request.args.get('f','own')
+        quotes = get_user_quotes(filt=filt,poet=g.poet)
+        return render_template('/user/information.html', quotes=quotes)
     
 @app.route('/account/edit', methods = ['GET','POST'])
 def account_edit():
@@ -167,4 +168,85 @@ def new_quotes():
 def display_quote(id):
     quote = Quote.query.get_or_404(id)
     return render_template('quotes/info.html', quote = quote)
+
+
+
+
+# API routes
+# ***********************************************
+
+
+@app.route('/quotes/like', methods=['POST'])
+def like_quote():
+    """Add a like to a quote through an api route"""
+    content = request.json.get('content')
+    author = request.json.get('author')
+    quote_id = request.json.get('id')
+    poet = g.poet
+    if content:
+        add_fam_like(content,author,poet)
+    else:
+        add_poet_like(quote_id,poet)
+
+    return {'message':'Success.'}
+
+@app.route('/quotes/like',methods=['DELETE'])
+def remove_like():
+    """Delete a poet-quote like relationship"""
+    content = request.json.get('content')
+    quote_id = request.json.get('id')
+    poet = g.poet
+    if content:
+        quote = Quote.query.filter_by(content=content).first()
+    elif id:
+        quote = Quote.query.get(id)
+    try:
+        Like.query.filter_by(quote_id=quote.id,poet_id=g.poet.id).delete()
+        db.session.commit()
+        return {'success':'Like removed.'}
+    except:
+        db.session.rollback()
+        return{'failed':'something went wrong'}
+
+
+@app.route('/quotes/share',methods=['POST'])
+def share_quote():
+    """Respost a quote"""
+    content = request.json.get('content')
+    author = request.json.get('author')
+    quote_id = request.json.get('id')
+    poet = g.poet
+    if content:
+        repost_fam(content=content, author=author,poet=poet)
+    else:
+        repost_user(quote_id=quote_id, poet_id=poet.id)
+
+    return {'message':'Success'}
+
+@app.route('/quotes/share',methods=['DELETE'])
+def remove_share():
+    """Delete a poet-quote share relationship"""
+    content = request.json.get('content')
+    quote_id = request.json.get('id')
+    poet = g.poet
+    if content:
+        quote = Quote.query.filter_by(content=content).first()
+    elif id:
+        quote = Quote.query.get(quote_id)
+    try:
+        Share.query.filter_by(quote_id=quote.id,poet_id=g.poet.id).delete()
+        db.session.commit()
+        return {'success':'Like removed.'}
+    except:
+        db.session.rollback()
+        return{'failed':'something went wrong'}
+
+
+@app.route('/reposted')
+def repost_reroute():
+    flash('Quote shared to your page successfully')
+    return redirect('/')
+
+
+
 

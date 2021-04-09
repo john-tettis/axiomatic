@@ -1,25 +1,75 @@
 
-{% if 'author' in quote%}
-<div class="card bg-light p-2 my-1 " style='width:20rem'>
+{% if quote.author%}
+<div class="card bg-light p-2 my-1 mx-auto " style='width:20rem'>
     <div class="card-body">
         <blockquote class="blockquote mb-0">
-        <p>{{quote.content}}</p>
-        <footer class="blockquote-footer">
-            <cite title="Source Title"><a href="https://www.google.com/search?q={{quote.author}}">{{quote.author}}</a></cite>
-        </footer>
+            <p>{{quote.content}}</p>
+            
+                <div class="row">
+                    <div class="col-9">
+                        <footer class="blockquote-footer">
+                            <cite title="Source Title"><a href="https://www.google.com/search?q={{quote.author}}" class='author'>{{quote.author}}</a></cite>
+                        </footer>
+                        </div>
+                    <div class="col-3">
+                        <div class="container-fluid d-flex justify-content-end">
+                            {% if quote in g.poet.shares%}
+                            <i class="mr-2 fas fa-minus-circle"></i>
+                            {% else %}
+                            <i class="mr-2 fas fa-share"></i>
+                            {% endif %}
+                            {% if quote in g.poet.likes%}
+                            <i class="fas fa-heart text-danger"></i>
+                            {% else %}
+                            <i class="far fa-heart text-danger"></i>
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                </div>
+            
         </blockquote>
+        
     </div>
+    
 </div> 
 {% else%}
-<div class="card bg-light" style='width:20rem'>
+<div class="card bg-light p-2 my-1 mx-auto " style='width:20rem'>
     <div class="card-body">
         <blockquote class="blockquote mb-0">
-        <p>{{quote.content}}</p>
-        <footer class="blockquote-footer">
-            <cite title="Source Title"><a href="/poets/{{quote.poet_id}}">{{quote.poet.username}}</a></cite>
-            <img class='border'src="{{quote.poet.image_url}}" alt="profile-image" style='height:30px; border-radius:50%'>
-        </footer>
+            <p>{{quote.content}}</p>
+            
+                <div class="row">
+                    <div class="col-9">
+                        <footer class="blockquote-footer">
+                            <cite title="Source Title"><a href="/poets/{{quote.poet_id}}" class='author'>{{quote.poet.username}}</a></cite>
+                        </footer>
+                        </div>
+                    <div class="col-3">
+                        
+                            <div class="container-fluid d-flex justify-content-end">
+                            {% if not quote in g.poet.quotes%}
+                                {% if quote in g.poet.shares%}
+                                <i class="mr-2 fas fa-minus-circle"></i>
+                                {% else %}
+                                <i class="mr-2 fas fa-share"></i>
+                                {% endif %}
+                                {% if quote in g.poet.likes%}
+                                <i class="fas fa-heart text-danger"></i>
+                                {% else %}
+                                <i class="far fa-heart text-danger"></i>
+                                {% endif %}
+                            {% else %}
+                            <i class="far fa-minus-square text-danger"></i>
+                            {% endif %}
+                        </div>
+                        
+                    </div>
+                </div>
+            
         </blockquote>
+        
     </div>
-</div>
+    
+</div> 
 {% endif %}

@@ -31,11 +31,11 @@ class Poet(db.Model):
 
     bio = db.Column(db.String(200), nullable = True)
 
-    likes = db.relationship('Like')
+    likes = db.relationship('Quote', secondary ='likes')
 
     comments = db.relationship('Comment')
 
-    shares = db.relationship('Share')
+    shares = db.relationship('Quote', secondary ='shares')
 
     quotes = db.relationship('Quote', backref = 'poet')
 
@@ -58,7 +58,7 @@ class Poet(db.Model):
         poet= cls.query.filter_by(username=username).first()
 
         if poet:
-            is_auth = bcrypt.check_password_hash(poet.hashed_+password, password)
+            is_auth = bcrypt.check_password_hash(poet.hashed_password, password)
             if is_auth:
                 return poet
 
@@ -71,25 +71,28 @@ class Quote(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=False)
+    poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=True)
 
     content = db.Column(db.String(200), nullable=False)
 
-    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    author = db.Column(db.String(80), nullable = True)
 
-    category = db.Column(db.String, nullable=True)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     likes = db.relationship('Like')
 
+    @classmethod
+    def handle_api_quote(cls, content, author):
+        quote = cls.query.filter_by(content=content).first()
 
-class TagCount(db.Model):
-    __tablename__ ='tag_count'
-    
-    tag_name = db.Column(db.String,primary_key=True)
+        if quote:
+            return quote
+        else:
+            quote = Quote(content=content,author=author)
+            db.session.add(quote)
+            db.session.commit()
+            return quote
 
-    poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=False, primary_key=True)
-
-    count = db.Column(db.Integer, nullable=False)
 
 class Share(db.Model):
     __tablename__ ='shares'
@@ -98,9 +101,7 @@ class Share(db.Model):
 
     poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=False)
 
-    user_quote_id = db.Column(db.Integer, db.ForeignKey('quotes.id', ondelete='cascade'))
-    
-    api_quote_id = db.Column(db.Text)
+    quote_id = db.Column(db.Integer, db.ForeignKey('quotes.id', ondelete='cascade'))
 
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
@@ -113,10 +114,8 @@ class Like(db.Model):
 
     poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=False)
 
-    user_quote_id = db.Column(db.Integer, db.ForeignKey('quotes.id', ondelete='cascade'))
+    quote_id = db.Column(db.Integer, db.ForeignKey('quotes.id', ondelete='cascade'))
     
-    api_quote_id = db.Column(db.Text)
-
     is_user_quote = db.Column(db.Boolean)
 
 
@@ -127,11 +126,7 @@ class Comment(db.Model):
 
     poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=False)
 
-    user_quote_id = db.Column(db.Integer, db.ForeignKey('quotes.id', ondelete='cascade'))
-    
-    api_quote_id = db.Column(db.Text)
-
-    is_user_quote = db.Column(db.Boolean)
+    quote_id = db.Column(db.Integer, db.ForeignKey('quotes.id', ondelete='cascade'))
 
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 

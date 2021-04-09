@@ -10,9 +10,14 @@
         <div class="mb-3">
             {{field.label(class='form-label')}}
        {{ field(class="form-control") }}
+       {% for error in field.errors%}
+       <span class="text-danger">{{error}}</span>
+       {% endfor %}
         </div>
     {%endfor%}
+    <a href="/account" class="btn btn-secondary">Cancel</a>
     <button class="btn btn-primary">Save</button>
+    
     </form>
 </div>
 
