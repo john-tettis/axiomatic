@@ -81,6 +81,8 @@ class Quote(db.Model):
 
     likes = db.relationship('Like')
 
+    comments = db.relationship('Comment', order_by='Comment.timestamp')
+
     @classmethod
     def handle_api_quote(cls, content, author):
         quote = cls.query.filter_by(content=content).first()
@@ -126,9 +128,13 @@ class Comment(db.Model):
 
     poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=False)
 
+    content = db.Column(db.String(200), nullable=False)
+
     quote_id = db.Column(db.Integer, db.ForeignKey('quotes.id', ondelete='cascade'))
 
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+
+    poet = db.relationship('Poet')
 
 
     

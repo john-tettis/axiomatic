@@ -2,9 +2,9 @@ from flask import Flask, render_template, request, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
-from models import db, connect_db, Poet, Quote, Share
+from models import db, connect_db, Poet, Quote, Share, Comment
 from forms import SignupForm, LoginForm, EditAccountForm, QuoteForm
-from request import retrieve_quotes, add_fam_like, add_poet_like, repost_fam, repost_user, get_user_quotes
+from request import retrieve_quotes, add_fam_like, add_poet_like, repost_fam, repost_user, get_user_quotes, get_qod
 
 
 
@@ -55,7 +55,8 @@ def do_logout():
 @app.route('/')
 def show_homepage():
     if g.poet:
-        return render_template('home.html')
+        quote = get_qod()
+        return render_template('home.html',quote=quote)
     else:
         return render_template('home_anon.html')
 
@@ -141,7 +142,14 @@ def account_edit():
                 flash('Oops, something went wrong...')
                 return redirect('/')
         return render_template('/user/edit.html', form= form)
-    
+
+@app.route('/poets/<int:id>')
+def poet_info(id):
+    """Displays poet info associated with another account"""
+    poet = Poet.query.get_or_404(id)
+    filt = request.args.get('f','own')
+    quotes = get_user_quotes(filt=filt,poet=poet)
+    return render_template('/user/information_anon.html',poet=poet, quotes=quotes)
 # Quote routes
 # **************************************************************************************************
 
@@ -242,10 +250,24 @@ def remove_share():
         return{'failed':'something went wrong'}
 
 
-@app.route('/reposted')
-def repost_reroute():
-    flash('Quote shared to your page successfully')
-    return redirect('/')
+@app.route('/comments/add', methods=["POST"])
+def add_comment():
+    content = request.json.get('content')
+    quote_id = request.json.get('quote_id')
+    poet = g.poet
+
+    comment = Comment(quote_id=quote_id, poet_id=poet.id,content=content)
+
+    
+    db.session.add(comment)
+    db.session.commit()
+    return {'success':'Comment added'}
+    # except:
+    #     db.session.rollback()
+    #     return{'failed':'something went wrong'}
+
+
+
 
 
 

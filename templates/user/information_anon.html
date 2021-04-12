@@ -1,0 +1,59 @@
+{% extends 'base.html'%}
+{%set active_page='account'%}
+
+{% block content %}
+<div class="container-md border rounded bg-light" style="min-height:50vh">
+    <h1 class="display-4 text-center">{{poet.username.capitalize()}}'s Account Information</h1>
+    <hr>
+    <div class="container-md m-5 justify-content-center">
+
+        <div class="row">
+            <div class="col">
+                Username:
+            </div>
+            <div class="col">
+                {{poet.username}}
+            </div>
+            <hr>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                Bio:
+            </div>
+            <div class="col">
+                {{poet.bio or 'No bio'}}
+            </div>
+            <hr>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                Profile image:
+            </div>
+            <div class="col">
+                <img src="{{poet.image_url}}" style='width:100px' alt="">
+                
+            </div>
+            <hr>
+        </div>
+    </div>
+    <div class="container-fluid  border p-0 rounded mt-4">
+        <div class="container-fluid" style='height:30px'>
+            <p class="d-inline mr-2">Show me {{poet.username}}'s:</p>
+            <a href="/poets/{{poet.id}}?f=likes" class="badge badge-success">Likes</a>
+            <a href="/poets/{{poet.id}}?fluid=own" class="badge badge-primary">Quotes</a>
+            <a href="/poets/{{poet.id}}?f=shares" class="badge badge-secondary">Shares</a>
+        </div>
+        <div class="container-fluid border">
+            <div class="row">
+                {% for quote in quotes %}
+                <div class="col justify-content-center">
+                    {% include '/quotes/quote.html' %}
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

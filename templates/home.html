@@ -2,7 +2,7 @@
 {% set active_page = "home"%}
 {% block content %}
 
-<div class="px-4 pt-5 my-5 text-center border-bottom">
+<div class="px-4 pt-5 my-5 text-center border-bottom" style="background:url(https://images.unsplash.com/photo-1492269682833-cd80f8a20b08?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTV8fHplbnxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80)">
     <h1 class="display-4 fw-bold">Don't-Quote-Me!</h1>
     <div class="col-lg-6 mx-auto">
       <p class="lead mb-4">Read what the world's most renowned intellectuals have to say. Discuss, create, have some fun!</p>
@@ -14,5 +14,35 @@
       <div class="container px-5">
         <img src="https://i1.wp.com/www.navitor.com/blog/wp-content/uploads/Quill-and-Paper.jpg?ssl=1" class="img" alt="..."></div>
     </div>
+    <div class="container-fluid">
+      <p>{{quote.content}}</p>
+      <footer class="blockquote-footer">
+        <cite title="Source Title"><a href="/poets/{{quote.poet_id}}" class='author'>{{quote.author}}</a></cite>
+    </footer>
+    <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
   </div>
+  
+</div>
+</div>
 {%endblock%}

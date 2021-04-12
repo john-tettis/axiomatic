@@ -1,7 +1,7 @@
 import requests
 from models import Quote, Like, db, Share
 
-url = "https://zenquotes.io/api/"
+url = "https://zenquotes.io/api"
 
 response = requests.request("GET", f'{url}/today')
 
@@ -10,9 +10,9 @@ def retrieve_quotes(filter):
     '''Retreive quotes from api or database depending on filter'''
 
     if filter == 'famous':
-        return get_famous_quotes(50)
+        return get_famous_quotes(36)
     if filter == 'community':
-        return Quote.query.filter_by(author=None).order_by(Quote.timestamp).all()
+        return Quote.query.filter_by(author=None).order_by(Quote.timestamp).limit(36).all()
 
 
 
@@ -28,6 +28,8 @@ def get_famous_quotes(limit):
             'content': obj['q'],
             'author': obj['a']
         })
+    if len(quotes)>limit:
+        del quotes[limit:]
     return quotes
 
 def get_user_quotes(filt, poet):
@@ -72,3 +74,12 @@ def repost_user(quote_id,poet_id):
     share = Share(poet_id=poet.id, quote_id=quote_id, is_user_quote=True)
     db.session.add(share)
     db.session.commit()
+
+def get_qod():
+    response = requests.request('GET',f'{url}/today')
+    obj = response.json()
+    quote ={
+        'content':obj[0]['q'],
+        'author':obj[0]['a']
+    }
+    return quote

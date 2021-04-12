@@ -19,10 +19,11 @@
                             <i class="mr-2 fas fa-share"></i>
                             {% endif %}
                             {% if quote in g.poet.likes%}
-                            <i class="fas fa-heart text-danger"></i>
+                            <i class="fas fa-heart text-danger mr-2"></i>
                             {% else %}
-                            <i class="far fa-heart text-danger"></i>
+                            <i class="far fa-heart text-danger mr-2"></i>
                             {% endif %}
+                            <i class="far fa-comment"></i>
                             
                         </div>
                     </div>
@@ -44,28 +45,74 @@
                         <footer class="blockquote-footer">
                             <cite title="Source Title"><a href="/poets/{{quote.poet_id}}" class='author'>{{quote.poet.username}}</a></cite>
                         </footer>
-                        </div>
+                    </div>
                     <div class="col-3">
                         
-                            <div class="container-fluid d-flex justify-content-end">
-                            {% if not quote in g.poet.quotes%}
-                                {% if quote in g.poet.shares%}
-                                <i class="mr-2 fas fa-minus-circle"></i>
-                                {% else %}
-                                <i class="mr-2 fas fa-share"></i>
-                                {% endif %}
-                                {% if quote in g.poet.likes%}
-                                <i class="fas fa-heart text-danger"></i>
-                                {% else %}
-                                <i class="far fa-heart text-danger"></i>
-                                {% endif %}
+                        <div class="container-fluid d-flex justify-content-end">
+                        {% if not quote in g.poet.quotes%}
+                            {% if quote in g.poet.shares%}
+                            <i class="mr-2 fas fa-minus-circle"></i>
                             {% else %}
-                            <i class="far fa-minus-square text-danger"></i>
+                            <i class="mr-2 fas fa-share"></i>
                             {% endif %}
-                        </div>
+                            {% if quote in g.poet.likes%}
+                            <i class="fas fa-heart text-danger"></i>
+                            {% else %}
+                            <i class="far fa-heart text-danger"></i>
+                            {% endif %}
+                        {% else %}
+                        <i class="far fa-minus-square text-danger"></i>
+                        {% endif %}
                         
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{quote.id}}">
+                            <i class="far fa-comment"></i>
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal  fade" id="modal{{quote.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{{quote.poet.username}}'s quote</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+                                </div>
+                                <div class="modal-body">
+                                
+                                <div class="container-fluid mb-5">
+                                    {{quote.content}}
+                                </div>
+                                <hr>
+                                <p class="lead">Comments:</p>
+                                    <div class="container-fluid ">
+                                        {%for comment in quote.comments%}
+                                        <div class="container border rounded bg-light">
+                                            <blockquote class="blockquote">
+                                                {{comment.content}}
+                                                <footer class="blockquote-footer">
+                                                    <cite title="Source Title"><a href="/poets/{{quote.poet_id}}" class='author'>{{comment.poet.username}}</a></cite>
+                                                </footer>
+                                            </blockquote>
+                                        </div>
+                                        {% endfor %}
+                                        
+                                        
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="container-fluid">
+                                        <form action="">
+                                            <div class="input-group">
+                                                <input data-quote='{{quote.id}}' type="text" class="form-control">
+                                                <button class="comment btn ml-1 btn-success">Comment</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
             
         </blockquote>
         
