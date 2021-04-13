@@ -20,6 +20,8 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config['SECRET_KEY'] = "it's a secret"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = False
+app.debug = False
+app.config['DEBUG'] = False
 toolbar = DebugToolbarExtension(app)
 
 CURR_POET = 'current_poet'
@@ -187,6 +189,8 @@ def display_quote(id):
 @app.route('/quotes/like', methods=['POST'])
 def like_quote():
     """Add a like to a quote through an api route"""
+    if not g.poet:
+        return ({'message':'Not logged in'})
     content = request.json.get('content')
     author = request.json.get('author')
     quote_id = request.json.get('id')
@@ -220,6 +224,8 @@ def remove_like():
 @app.route('/quotes/share',methods=['POST'])
 def share_quote():
     """Respost a quote"""
+    if not g.poet:
+        return ({'message':'Not logged in'})
     content = request.json.get('content')
     author = request.json.get('author')
     quote_id = request.json.get('id')
@@ -237,31 +243,37 @@ def remove_share():
     content = request.json.get('content')
     quote_id = request.json.get('id')
     poet = g.poet
+    import pdb 
+    pdb.set_trace()
     if content:
         quote = Quote.query.filter_by(content=content).first()
     elif id:
         quote = Quote.query.get(quote_id)
-    try:
-        Share.query.filter_by(quote_id=quote.id,poet_id=g.poet.id).delete()
-        db.session.commit()
-        return {'success':'Like removed.'}
-    except:
-        db.session.rollback()
-        return{'failed':'something went wrong'}
+   
+    Share.query.filter_by(quote_id=quote.id,poet_id=g.poet.id).delete()
+    db.session.commit()
+    return {'success':'Like removed.'}
+    # except:
+    #     db.session.rollback()
+    #     return{'failed':'something went wrong'}
 
 
 @app.route('/comments/add', methods=["POST"])
 def add_comment():
+    if not g.poet:
+        return ({'message':'Not logged in'})
     content = request.json.get('content')
-    quote_id = request.json.get('quote_id')
+    author = request.json.get('author')
+    quote_content=request.json.get('quote_content')
     poet = g.poet
+    quote = Quote.handle_api_quote(content=quote_content, author = author)
 
-    comment = Comment(quote_id=quote_id, poet_id=poet.id,content=content)
+    comment = Comment(quote_id=quote.id, poet_id=poet.id,content=content)
 
     
     db.session.add(comment)
     db.session.commit()
-    return {'success':'Comment added'}
+    return {'message':quote_content}
     # except:
     #     db.session.rollback()
     #     return{'failed':'something went wrong'}

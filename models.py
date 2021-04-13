@@ -31,7 +31,7 @@ class Poet(db.Model):
 
     bio = db.Column(db.String(200), nullable = True)
 
-    likes = db.relationship('Quote', secondary ='likes')
+    likes = db.relationship('Quote', secondary ='likes', lazy='subquery')
 
     comments = db.relationship('Comment')
 

@@ -48,7 +48,7 @@
         </div>
         <div class="container-fluid border">
             <div class="row">
-                {% for quote in quotes %}
+                {% for quote in quotes|reverse %}
                 <div class="col justify-content-center">
                     {% include '/quotes/quote.html' %}
                 </div>
