@@ -2,42 +2,50 @@
 {%set active_page='account'%}
 
 {% block content %}
-<div class="container-md border rounded bg-light" style="min-height:50vh">
-    <h1 class="display-4 text-center">{{poet.username.capitalize()}}'s Account Information</h1>
-    <hr>
-    <div class="container-md m-5 justify-content-center">
+<div class="container-md " style="min-height:50vh">
 
-        <div class="row">
-            <div class="col">
-                Username:
-            </div>
-            <div class="col">
-                {{poet.username}}
-            </div>
-            <hr>
+    <div class="row">
+        <div class="col-12 col-md-6 d-flex justify-content-center">
+            <img class='rounded-circle'src="{{poet.image_url}}" style='width:50%' alt="">
         </div>
-
-        <div class="row">
-            <div class="col">
-                Bio:
-            </div>
-            <div class="col">
-                {{poet.bio or 'No bio'}}
+        <div class="col-12 col-md-6">
+            <div class="row no-gutters">
+                <div class="col-10 col-md-6">
+                    <h1 class="display-4 text-left">{{poet.username.capitalize()}}</h1>
+                </div>
+                <div class="col">
+                    {%if g.poet in poet.followers%}
+                    <form class='mt-4'action="/unfollow" method="POST">
+                        <button class="btn btn-outline-primary unfollow">Unfollow</button>
+                        <input type="hidden" name='poet' value='{{poet.id}}'>
+                    </form>
+                    
+                    {% else%}
+                    <form class='mt-4' action="/follow" method="POST">
+                        <button class="btn btn-primary follow">Follow</button>
+                        <input type="hidden" name='poet' value='{{poet.id}}'>
+                    </form>
+                    {% endif %}
+                </div>
             </div>
             <hr>
-        </div>
+            <div class="row mr-3 no-gutters">
+                <div class="col">
+                    {{poet.likes|count}} likes
+                </div>
+                <div class="col">
+                    {{poet.quotes|count}} quotes
+                </div>
+                <div class="col">
+                    {{poet.followers|count}} followers
+                </div>
+            </div>
+            <p class="lead ">{{poet.bio or 'no bio'}}</p>
 
-        <div class="row">
-            <div class="col">
-                Profile image:
-            </div>
-            <div class="col">
-                <img src="{{poet.image_url}}" style='width:100px' alt="">
-                
-            </div>
-            <hr>
         </div>
     </div>
+    
+    <hr>
     <div class="container-fluid  border p-0 rounded mt-4">
         <div class="container-fluid" style='height:30px'>
             <p class="d-inline mr-2">Show me {{poet.username}}'s:</p>

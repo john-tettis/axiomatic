@@ -16,6 +16,11 @@ def connect_db(app):
     db.init_app(app)
 
 
+follows = db.Table('follows',
+    db.Column('follower_id', db.Integer, db.ForeignKey('poets.id'), primary_key=True),
+    db.Column('followed_id', db.Integer, db.ForeignKey('poets.id'), primary_key=True)
+)
+
 class Poet(db.Model):
     """User (poet) object"""
     __tablename__ ='poets'
@@ -30,6 +35,12 @@ class Poet(db.Model):
     image_url = db.Column(db.String, default='https://secure.gravatar.com/avatar/f25866817ff07876c8cedc80c4dbb979?s=150&r=g&d=https://chicagodispatcher.com/wp-content/plugins/userswp/assets/images/no_profile.png')
 
     bio = db.Column(db.String(200), nullable = True)
+
+    followers = db.relationship('Poet', secondary=follows,
+     primaryjoin= id == follows.c.follower_id,
+     secondaryjoin=id == follows.c.followed_id,
+     backref='following'
+     )
 
     likes = db.relationship('Quote', secondary ='likes', lazy='subquery')
 
@@ -54,7 +65,7 @@ class Poet(db.Model):
     
     @classmethod
     def authenticate(cls,username,password):
-        """Authenticaters a login attempt"""
+        """Authenticate a login attempt"""
         poet= cls.query.filter_by(username=username).first()
 
         if poet:
@@ -73,7 +84,7 @@ class Quote(db.Model):
 
     poet_id = db.Column(db.Integer, db.ForeignKey('poets.id', ondelete='cascade'), nullable=True)
 
-    content = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.String(200), nullable=False, unique=True)
 
     author = db.Column(db.String(80), nullable = True)
 
@@ -90,9 +101,12 @@ class Quote(db.Model):
         if quote:
             return quote
         else:
-            quote = Quote(content=content,author=author)
-            db.session.add(quote)
-            db.session.commit()
+            try:
+                quote = Quote(content=content,author=author)
+                db.session.add(quote)
+                db.session.commit()
+            except IntegrityError:
+                quote = cls.query.filter_by(content=content).first()
             return quote
 
 

@@ -9,12 +9,12 @@
         <p class="d-inline mr-2">Sort by:</p>
         <a href="/quotes?f=famous" class="badge badge-primary">Famous</a>
         <a href="/quotes?f=community" class="badge badge-secondary">Community</a>
-        <a href="/quotes?f=author" class="badge badge-success">Author</a>
+        <a href="/quotes?f=following" class="badge badge-success">Following</a>
     </div>
     <div class="container-fluid border">
         <div class="row">
             {% for quote in quotes %}
-            <div class="col">
+            <div class="col-12 col-md-4">
                 {% include '/quotes/quote.html' %}
             </div>
             {%endfor%}

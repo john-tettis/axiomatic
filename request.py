@@ -1,5 +1,6 @@
 import requests
 from models import Quote, Like, db, Share
+from app import g
 
 url = "https://zenquotes.io/api"
 
@@ -13,6 +14,8 @@ def retrieve_quotes(filter):
         return get_famous_quotes(36)
     if filter == 'community':
         return Quote.query.filter_by(author=None).order_by(Quote.timestamp).limit(36).all()
+    if filter =='following':
+        return get_following_quotes()
 
 
 
@@ -40,6 +43,7 @@ def get_user_quotes(filt, poet):
         return poet.likes
     if filt == 'shares':
         return poet.shares
+    
     else:
         return poet.likes
 
@@ -83,3 +87,10 @@ def get_qod():
         'author':obj[0]['a']
     }
     return quote
+
+def get_following_quotes():
+    """Retreive quotes from g.poets following"""
+    ids = [poet.id for poet in g.poet.following]
+    quotes = Quote.query.filter(Quote.poet_id.in_(ids))
+    return quotes
+

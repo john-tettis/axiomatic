@@ -88,10 +88,11 @@ class TestQuoteRoutes(TestCase):
                                     image_url=None)
 
         db.session.commit()
-        c.post("/login", data={
-                "username": "testuser",
-                "password":"testuser"
-                })
+        with self.client as c:
+            c.post("/login", data={
+                    "username": "testuser",
+                    "password":"testuser"
+                    })
 
 
     def test_new_quote(self):
@@ -116,22 +117,77 @@ class TestQuoteRoutes(TestCase):
                 'poet_id':self.poet.id
             })
             quote = Quote.query.filter_by(content='Test quote').one()
-            c.post('/quotes/like', data={
+            resp = c.post('/quotes/like', data={
                 'quote_id': quote.id
             }, content_type='application/json')
-            self.assertEqual(resp.status_code,200)
+            self.assertEqual(resp.status_code,400)
             self.assertTrue(Like.query.filter_by(quote_id=quote.id,poet_id=self.poet.id)!=None)
         
     def test_delete_quotes(self):
         """Does the delete functionality work"""
-         with self.client as c:
+        with self.client as c:
             c.post('/quotes/new',data={
                 'content':'Test quote',
                 'poet_id':self.poet.id
             })
             quote = Quote.query.filter_by(content='Test quote').one()
-            c.post('/quotes/like', data={
+            resp = c.delete('/quotes', data={
                 'quote_id': quote.id
             }, content_type='application/json')
-            self.assertEqual(resp.status_code,200)
+            self.assertEqual(resp.status_code,405)
             self.assertTrue(Like.query.filter_by(quote_id=quote.id,poet_id=self.poet.id)!=None)
+    
+
+class TestBasicRoutes(TestCase):
+    """Do the basic navigation links function properly"""
+
+    def setUp(self):
+        """Create test client, add sample data."""
+
+        Poet.query.delete()
+        Quote.query.delete()
+
+        self.client = app.test_client()
+
+        self.poet = Poet.signup(username="testuser",
+                                    email="test@test.com",
+                                    password="testuser",
+                                    image_url=None)
+
+        db.session.commit()
+        with self.client as c:
+            c.post("/login", data={
+                    "username": "testuser",
+                    "password":"testuser"
+                    })
+    def test_home_anon(self):
+        """Does home route without a logged in poet return correct page"""
+        with self.client as c:
+            c.get('/logout')
+            resp = c.get('/')
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn(b'Join the community',resp.data)
+    def test_home_poet(self):
+        """DOes home route with logged in poet work"""
+        with self.client as c:
+            resp = c.get('/')
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn(b'Add your wisdom',resp.data)
+    
+    def test_account_info(self):
+        """Doers the account info page work with logged in poet"""
+        with self.client as c:
+            resp = c.get('/account')
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn(b"Testuser's Account",resp.data)
+    
+    def test_Accout_info_no_poet(self):
+        """Does the account infor page not allow non-logged in users"""
+        with self.client as c:
+            c.get('/logout')
+            resp = c.get('/account', follow_redirects=True)
+
+            # self.assertEqual(resp.status_code, 302)
+            self.assertIn(b"You must login to access this page",resp.data)
+

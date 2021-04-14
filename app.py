@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
-from models import db, connect_db, Poet, Quote, Share, Comment
+from models import db, connect_db, Poet, Quote, Share, Comment, follows
 from forms import SignupForm, LoginForm, EditAccountForm, QuoteForm
 from request import retrieve_quotes, add_fam_like, add_poet_like, repost_fam, repost_user, get_user_quotes, get_qod
 
@@ -60,7 +60,12 @@ def show_homepage():
         quote = get_qod()
         return render_template('home.html',quote=quote)
     else:
-        return render_template('home_anon.html')
+        return render_template('home_anon.html')\
+
+@app.route('/about')
+def show_about_page():
+    """Display the information about this project"""
+    return render_template('about.html')
 
 
 # user routes
@@ -149,9 +154,29 @@ def account_edit():
 def poet_info(id):
     """Displays poet info associated with another account"""
     poet = Poet.query.get_or_404(id)
+    if poet == g.poet:
+        return redirect('/account')
     filt = request.args.get('f','own')
     quotes = get_user_quotes(filt=filt,poet=poet)
     return render_template('/user/information_anon.html',poet=poet, quotes=quotes)
+
+@app.route('/follow', methods=['POST'])
+def follow():
+    poet_id = request.form.get('poet')
+    poet = Poet.query.get_or_404(poet_id)
+    poet.followers.append(g.poet)
+    db.session.commit()
+    return redirect(f'/poets/{poet_id}')
+
+@app.route('/unfollow', methods=['POST'])
+def unfollow():
+    poet_id = request.form.get('poet')
+    poet = Poet.query.get_or_404(poet_id)
+    poet.followers.remove(g.poet)
+    db.session.commit()
+    return redirect(f'/poets/{poet_id}')
+
+
 # Quote routes
 # **************************************************************************************************
 
@@ -163,6 +188,9 @@ def display_quotes():
 
 @app.route('/quotes/new', methods=['GET','POST'])
 def new_quotes():
+    if not g.poet:
+        flash('you must be logged in to create a quote!')
+        return redirect('/')
 
     form = QuoteForm()
 

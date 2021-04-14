@@ -1,12 +1,9 @@
-console.log('BEANS')
 
 $('.fa-heart').on('click', function(e){
     let temp = $(e.target).parent().parent().parent().parent().parent()
     let content = temp.find('.quote-content').first().text()
     let author = temp.find('.author').text()
-    if(likeQuote(content,author)){
-        updateHeart($(e.target))
-    }
+    likeQuote(content, author, $(e.target))
 })
 // $(document).ready(function() {
 //     $("#mymodal").modal();
@@ -17,11 +14,7 @@ $('.fa-share').on('click', function(e){
     let content = temp.find('.quote-content').first().text()
     let author = temp.find('.author').text()
     console.log(content)
-    if(shareQuote(content,author)){
-        updateRepost($(e.target))
-    }
-        
-
+    shareQuote(content,author,$(e.target))
 })
 
 $('.comment').on('click', function(e){
@@ -29,6 +22,7 @@ $('.comment').on('click', function(e){
     let $input = $(e.target).parent().find('input')
     let content = $input.val()
     let author = $input.data('quote')
+    $input.val('')
     let qc = $(e.target).parent().parent().parent().parent().parent().find('.quote-content').text()
     console.log(content, author, qc)
     addComment(content,author, qc)
@@ -47,30 +41,33 @@ $('.fa-minus-circle').on('click', function(e){
 
 
 
-function likeQuote(content, author){
-    return axios.post('/quotes/like',{
+async function likeQuote(content, author,target){
+    return await axios.post('/quotes/like',{
         content:content,
         author:author
     }).then(function(response){
-        if(response['message'] === 'Not logged in'){
+        if(response.data['message'] === 'Not logged in'){
             alert('You must log in to like a quote')
-            return false
         }
-        return true
+        else{
+            updateHeart(target)
+        }
     })
 }
-function shareQuote(content, author){
+function shareQuote(content, author,target){
     return axios.post('/quotes/share',{
         content:content,
         author:author
     }).then(function(response){
         console.log(response)
-        if(response['message'] === 'Not logged in'){
+        if(response.data['message'] === 'Not logged in'){
             console.log(response)
             alert('You must log in to share a quote')
-            return false
         }
-        return true
+        else{
+            updateRepost(target)
+        }
+        
     })
 }
 function unshareQuote(content, author){

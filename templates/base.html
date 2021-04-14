@@ -22,7 +22,7 @@
 {% else %}
 {% set navigation_bar = [
     ('/', 'home', 'Home'),
-    ('/quotes/', 'quotes', 'Quotes'),
+    ('/quotes', 'quotes', 'Quotes'),
     ('/about/', 'about', 'About'),
 ] -%}
 
@@ -45,8 +45,8 @@
               </li>
           {% endfor %}
       </ul>
-      <!-- <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <!-- <form class="d-flex" action='/search'>
+        <input class="form-control me-2" type="search" name='q' placeholder="Search authors" aria-label="Search" required>
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form> -->
       
@@ -71,7 +71,7 @@
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     {% for message in messages %}
-     <div class="container-fluid bg-primary">
+     <div class="container-fluid d-flex justify-content-center bg-primary" style='height:30px'>
        <p class="mx-auto text-white">
         {{message}}
        </p>
