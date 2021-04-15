@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {%set active_page='account'%}
+{% block title %}Your account{% endblock %}
 
 {% block content %}
 <div class="container-md border rounded bg-light" style="min-height:50vh">
@@ -50,7 +51,7 @@
         <div class="container-fluid border">
             <div class="row">
                 {% for quote in quotes|reverse %}
-                <div class="col justify-content-center">
+                <div class="col-12 col-md-4">
                     {% include '/quotes/quote.html' %}
                 </div>
                 {%endfor%}

@@ -1,6 +1,7 @@
 
 $('.fa-heart').on('click', function(e){
-    let temp = $(e.target).parent().parent().parent().parent().parent()
+    let temp = $(e.target).parent().parent().parent()
+    console.log(temp)
     let content = temp.find('.quote-content').first().text()
     let author = temp.find('.author').text()
     likeQuote(content, author, $(e.target))

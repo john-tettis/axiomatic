@@ -105,7 +105,7 @@ class Quote(db.Model):
                 quote = Quote(content=content,author=author)
                 db.session.add(quote)
                 db.session.commit()
-            except IntegrityError:
+            except:
                 quote = cls.query.filter_by(content=content).first()
             return quote
 

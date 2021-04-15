@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Marck+Script&display=swap');
+
+.astext {
+    background:none;
+    color:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    margin-bottom:10px;
+}
+.astext:focus {
+    outline: none;
+    box-shadow: none;
+  }
+i{
+    margin-top:5px;
+    cursor:pointer;
+}
+
+.quote-footer{
+    height:30px;
+}
+
+hr.quote{
+    margin-bottom:10px;
+    margin-top:30px;
+}
+
+/* .hero{
+    background:url('https://images.unsplash.com/photo-1492269682833-cd80f8a20b08?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTV8fHplbnxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80');
+    background-repeat:no-repeat;
+
+} */
+
+.imgbox {
+    display: grid;
+    height: 100%;
+}
+.center-fit {
+    width: 100vw;
+}
+
+.img-holder{
+    position: relative;
+    text-align: center;
+    height:70vh;
+    overflow-y:hidden;
+    overflow-x:hidden;
+}
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.qod{
+    height:80vh;
+}
+.qod blockquote p{
+    font-family: 'Marck Script', cursive;
+    font-size:3em;
+}
+#push{
+    height:80px;
+}
+@media screen and (max-width: 540px){
+    #push{
+        height:150px
+    }
+    .qod blockquote p{
+        font-size:1em;
+    }
+
+}
+.comments{
+    height:20rem;
+    overflow-y:scroll;
+}
+

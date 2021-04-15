@@ -183,6 +183,10 @@ def unfollow():
 @app.route('/quotes')
 def display_quotes():
     filt= request.args.get('f','famous')
+    if filt == 'following':
+        if not g.poet:
+            flash('You are not logged in!')
+            return redirect('/quotes')
     quotes = retrieve_quotes(filt)
     return render_template('/quotes/quotes.html', quotes = quotes)
 
