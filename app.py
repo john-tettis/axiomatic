@@ -26,7 +26,7 @@ app.config['DEBUG'] = False
 toolbar = DebugToolbarExtension(app)
 
 CURR_POET = 'current_poet'
-connect_db(app)S
+connect_db(app)
 app.config['SQLALCHEMY_DATABASE_URI']='postgresql:///dont-quote-me'
 
 
