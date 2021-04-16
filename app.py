@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
+import os
 
 from models import db, connect_db, Poet, Quote, Share, Comment, follows
 from forms import SignupForm, LoginForm, EditAccountForm, QuoteForm
