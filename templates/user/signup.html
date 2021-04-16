@@ -1,20 +1,24 @@
 {% extends 'base.html'%}
 {%set active_page='none'%}
 {% block title %}Sign up{% endblock %}
+{%set no_push=True%}
 {% block content %}
-<div class="container">
-<h1 class="display-3 text-center">Create Account</h1>
-<p>Already have an account?<a href="/login">Login</a></p>
-    <form method='POST'>
-        {{ form.hidden_tag() }}
-    {% for field in form if field.widget.input_type != 'hidden'%}
-        <div class="input-group mb-3">
-       {{ field(placeholder=field.label.text, class="form-control") }}
-        </div>
-    {%endfor%}
-    <button class="btn btn-primary">Creat Account</button>
-    </form>
+<div class="container-fluid d-flex full">
+    <div class="container my-auto">
+        <h1 class="display-3 text-center">Create Account</h1>
+        <p>Already have an account?<a href="/login">Login</a></p>
+        <form method='POST'>
+            {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != 'hidden'%}
+            <div class="input-group mb-3">
+        {{ field(placeholder=field.label.text, class="form-control") }}
+            </div>
+        {%endfor%}
+        <button class="btn btn-primary">Create Account</button>
+        </form>
+    </div>
 </div>
+<div class="push-log"></div>
 
 
 {% endblock%}

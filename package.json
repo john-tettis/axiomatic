@@ -1,0 +1,25 @@
+{
+  "name": "cap-1",
+  "version": "1.0.0",
+  "description": "api link - http://quotes.rest/?ref=apilist.fun",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/john-tettis/dont-quote-me.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/john-tettis/dont-quote-me/issues"
+  },
+  "homepage": "https://github.com/john-tettis/dont-quote-me#readme",
+  "dependencies": {
+    "bootstrap": "^4.0.0-alpha.6"
+  }
+}

@@ -4,13 +4,17 @@
 
 {% block content %}
 <h1 class="display-4 text-center">Wisdom abounds!</h1>
-<a href="/quotes/new" class="btn btn-outline-primary">Make a new Quote</a>
+<div class="container-fluid text-center  d-md-none">
+    <p class="card-text">Want to share your own axioms?</p>
+    <a href="/quotes/new" class="btn btn-outline-primary">Create your own quote!</a>
+</div>
+
 <div class="container  border p-0 rounded mt-4">
     <div class="container-fluid" style='height:30px'>
-        <p class="d-inline mr-2">Sort by:</p>
-        <a href="/quotes?f=famous" class="badge badge-primary">Famous</a>
-        <a href="/quotes?f=community" class="badge badge-secondary">Community</a>
-        <a href="/quotes?f=following" class="badge badge-success">Following</a>
+        <p class="d-inline mr-2">Show me:</p>
+        <a href="/quotes?f=philosophers" class="badge badge-primary">Philosphers</a>
+        <a href="/quotes?f=community" class="badge badge-primary">Community</a>
+        <a href="/quotes?f=following" class="badge badge-primary">Following</a>
     </div>
     <div class="container-fluid border">
         <div class="row">
@@ -21,6 +25,13 @@
             {%endfor%}
         </div>
     </div>
+</div>
+<div class="card  float d-none d-md-block">
+    <div class="card-body">
+        <p class="card-text">Want to share your own axioms?</p>
+        <a href="/quotes/new" class="">Create your own quote!</a>
+    </div>
+
 </div>
     
 

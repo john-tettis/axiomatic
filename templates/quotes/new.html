@@ -3,19 +3,25 @@
 {% block title %}Create a new Quote{% endblock %}
 
 {% block content %}
-<div class="container border rounded bg-light p-3 mt-3">
-<h1 class="display-3 text-center">Share your wisdom!</h1>
-    <form method='POST'>
-        {{ form.hidden_tag() }}
-    {% for field in form if field.widget.input_type != 'hidden'%}
-        <div class="mb-3">
-            {{field.label(class='form-label')}}
-       {{ field(class="form-control") }}
-        </div>
-    {%endfor%}
-    <button class="btn btn-primary">Send to the world!</button>
-    </form>
+<div class="container-fluid flex-column full">
+    <h1 class="display-3 mt-4 text-center">Share your wisdom!</h1>
+    <div class="container my-auto bg-light rounded p-3">
+
+        <form method='POST'>
+            {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != 'hidden'%}
+            <div class="mb-3">
+                {{field.label(class='form-label')}}
+            {{ field(class="form-control") }}
+            </div>
+        {%endfor%}
+        <button class="btn btn-primary">Send to the world!</button>
+        </form>
+    </div>
+
 </div>
+
+<div class="push-log"></div>
 
 
 {% endblock%}

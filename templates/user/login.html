@@ -1,26 +1,30 @@
 {% extends 'base.html'%}
 {%set active_page='none'%}
+{%set no_push=True%}
 {% block title %}Log in{% endblock %}
 
 {% block content %}
-<div class="container">
-<h1 class="display-3 text-center">Login to your account</h1>
-<p>Don't have an account?<a href="/signup">Signup</a></p>
-    <form method='POST'>
-        {{ form.hidden_tag() }}
-    {% for field in form if field.widget.input_type != 'hidden'%}
-        <div class="input-group mb-3">
-       {{ field(placeholder=field.label.text, class="form-control") }}
+<div class="container-fluid d-flex full">
+    <div class="container my-auto">
+        <h1 class="display-3 text-center">Login to your account</h1>
+        <p>Don't have an account?<a href="/signup">Signup</a></p>
+            <form method='POST'>
+                {{ form.hidden_tag() }}
+            {% for field in form if field.widget.input_type != 'hidden'%}
+                <div class="input-group mb-3">
+               {{ field(placeholder=field.label.text, class="form-control") }}
+                </div>
+            {%endfor%}
+            {% for field in form.errors %}
+            {%for error in form.errors[field]%}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+                  {% endfor %} <br>
+            <button class="btn btn-primary mt-3">Login</button>
+            </form>
         </div>
-    {%endfor%}
-    {% for field in form.errors %}
-    {%for error in form.errors[field]%}
-            <span class="text-danger">{{ error }}</span>
-        {% endfor %}
-          {% endfor %} <br>
-    <button class="btn btn-primary mt-3">Login</button>
-    </form>
 </div>
 
+<div class="push-log"></div>
 
 {% endblock%}

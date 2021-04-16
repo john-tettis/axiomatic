@@ -56,11 +56,11 @@ def do_logout():
 
 @app.route('/')
 def show_homepage():
+    quote = get_qod()
     if g.poet:
-        quote = get_qod()
         return render_template('home.html',quote=quote)
     else:
-        return render_template('home_anon.html')\
+        return render_template('home_anon.html', quote=quote)
 
 @app.route('/about')
 def show_about_page():
@@ -156,9 +156,7 @@ def poet_info(id):
     poet = Poet.query.get_or_404(id)
     if poet == g.poet:
         return redirect('/account')
-    filt = request.args.get('f','own')
-    quotes = get_user_quotes(filt=filt,poet=poet)
-    return render_template('/user/information_anon.html',poet=poet, quotes=quotes)
+    return render_template('/user/information_anon.html',poet=poet)
 
 @app.route('/follow', methods=['POST'])
 def follow():
@@ -182,7 +180,7 @@ def unfollow():
 
 @app.route('/quotes')
 def display_quotes():
-    filt= request.args.get('f','famous')
+    filt= request.args.get('f','philosophers')
     if filt == 'following':
         if not g.poet:
             flash('You are not logged in!')
@@ -202,7 +200,7 @@ def new_quotes():
         quote = Quote(content = form.content.data, poet_id = g.poet.id)
         db.session.add(quote)
         db.session.commit()
-        return redirect(f'/quotes/{quote.id}')
+        return redirect(f'/account?f=own')
     else:
         return render_template('quotes/new.html', form=form)
 
@@ -210,6 +208,16 @@ def new_quotes():
 def display_quote(id):
     quote = Quote.query.get_or_404(id)
     return render_template('quotes/info.html', quote = quote)
+
+@app.route('/quotes/<int:id>',methods=['DELETE'])
+def removeQuote(id):
+    quote = Quote.query.get(id)
+    if not quote:
+        return {'message':'failed'}
+    else:
+        db.session.delete(quote)
+        db.session.commit()
+        return {'message':'success'}
 
 
 

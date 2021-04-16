@@ -10,7 +10,7 @@ response = requests.request("GET", f'{url}/today')
 def retrieve_quotes(filter):
     '''Retreive quotes from api or database depending on filter'''
 
-    if filter == 'famous':
+    if filter == 'philosophers':
         return get_famous_quotes(36)
     if filter == 'community':
         return Quote.query.filter_by(author=None).order_by(Quote.timestamp).limit(36).all()

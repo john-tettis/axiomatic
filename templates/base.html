@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/colors.css">
     <title>{% block title%}{% endblock %}</title>
 </head>
 <body>
@@ -33,7 +34,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Axiomatic</a>
+    <a class="navbar-brand" href="/">Axiomatic</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -81,7 +82,9 @@
 {% endwith %}
 {%block content%}
 {%endblock %}
-<div id="push"></div>
+{% if not no_push%}
+<div class="push"></div>
+{%endif%}
 
 <footer class="bg-dark text-center text-lg-start">
   

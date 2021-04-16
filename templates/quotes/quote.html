@@ -77,7 +77,7 @@
     
 </div> 
 {% else%}
-<div class="card bg-light p-2 my-1 mx-auto " style='width:20rem'>
+<div class="card p-2 my-1 mx-auto bg-secondary" style='width:100%rem'>
     <div class="card-body">
         <blockquote class="blockquote mb-0">
             <p>{{quote.content}}</p>
@@ -104,7 +104,7 @@
             {% endif %}
             
         {% else %}
-        <i class="far fa-minus-square text-danger"></i>
+        <i  data-quote='{{quote.id}}'class="far fa-minus-square text-danger"></i>
         {% endif %}
         
         <!-- Button trigger modal -->

@@ -15,6 +15,8 @@ def connect_db(app):
     db.app = app
     db.init_app(app)
 
+def date_time(obj):
+    return obj.timestamp
 
 follows = db.Table('follows',
     db.Column('follower_id', db.Integer, db.ForeignKey('poets.id'), primary_key=True),
@@ -49,6 +51,14 @@ class Poet(db.Model):
     shares = db.relationship('Quote', secondary ='shares')
 
     quotes = db.relationship('Quote', backref = 'poet')
+
+    def feed(self):
+        """returns concatinated quotes and shares"""
+        quotes = self.quotes
+        shares = self.shares
+        all_quotes = quotes + shares
+        all_quotes.sort(key=date_time)
+        return all_quotes
 
     @classmethod
     def signup(cls,username,password,email,image_url):
