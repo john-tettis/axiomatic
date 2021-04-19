@@ -91,6 +91,6 @@ def get_qod():
 def get_following_quotes():
     """Retreive quotes from g.poets following"""
     ids = [poet.id for poet in g.poet.following]
-    quotes = Quote.query.filter(Quote.poet_id.in_(ids))
+    quotes = Quote.query.filter(Quote.poet_id.in_(ids)).all()
     return quotes
 

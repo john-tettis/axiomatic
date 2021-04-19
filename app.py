@@ -3,7 +3,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 import os
 
-from models import db, connect_db, Poet, Quote, Share, Comment, follows
+from models import db, connect_db, Poet, Quote, Share, Comment, follows, Like
 from forms import SignupForm, LoginForm, EditAccountForm, QuoteForm
 from request import retrieve_quotes, add_fam_like, add_poet_like, repost_fam, repost_user, get_user_quotes, get_qod
 
@@ -205,11 +205,6 @@ def new_quotes():
     else:
         return render_template('quotes/new.html', form=form)
 
-@app.route('/quotes/<int:id>')
-def display_quote(id):
-    quote = Quote.query.get_or_404(id)
-    return render_template('quotes/info.html', quote = quote)
-
 @app.route('/quotes/<int:id>',methods=['DELETE'])
 def removeQuote(id):
     quote = Quote.query.get(id)
@@ -236,6 +231,7 @@ def like_quote():
     author = request.json.get('author')
     quote_id = request.json.get('id')
     poet = g.poet
+    
     if content:
         add_fam_like(content,author,poet)
     else:
@@ -302,7 +298,7 @@ def remove_share():
 @app.route('/comments/add', methods=["POST"])
 def add_comment():
     if not g.poet:
-        return ({'message':'Not logged in'})
+        return 'Not logged in'
     content = request.json.get('content')
     author = request.json.get('author')
     quote_content=request.json.get('quote_content')
@@ -314,7 +310,7 @@ def add_comment():
     
     db.session.add(comment)
     db.session.commit()
-    return {'message':quote_content}
+    return poet.serialize()
     # except:
     #     db.session.rollback()
     #     return{'failed':'something went wrong'}

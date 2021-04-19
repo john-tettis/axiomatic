@@ -4,7 +4,12 @@ $('.fa-heart').on('click', function(e){
     console.log(temp)
     let content = temp.find('.quote-content').first().text()
     let author = temp.find('.author').text()
-    likeQuote(content, author, $(e.target))
+    if($(e.target).hasClass('fas')){
+        deleteLike(content, $(e.target))
+    }
+    else{
+        likeQuote(content, author, $(e.target))
+    }
 })
 // $(document).ready(function() {
 //     $("#mymodal").modal();
@@ -25,8 +30,10 @@ $('.comment').on('click', function(e){
     let author = $input.data('quote')
     $input.val('')
     let qc = $(e.target).parent().parent().parent().parent().parent().find('.quote-content').text()
-    console.log(content, author, qc)
-    addComment(content,author, qc)
+    if(content){
+        addComment(content,author, qc,e)
+    }
+    
 
 })
 
@@ -52,6 +59,7 @@ async function likeQuote(content, author,target){
         content:content,
         author:author
     }).then(function(response){
+        console.log(response)
         if(response.data['message'] === 'Not logged in'){
             flash('You must log in to like a quote')
         }
@@ -59,6 +67,17 @@ async function likeQuote(content, author,target){
             updateHeart(target)
         }
     })
+}
+function deleteLike(content, target){
+    axios.delete('/quotes/like',{data:{
+        content:content
+
+    }}).then(function(response){
+        console.log(response)
+        updateHeart(target)
+
+    })
+
 }
 function shareQuote(content, author,target){
     return axios.post('/quotes/share',{
@@ -99,13 +118,18 @@ function updateHeart(target){
     }
 }
 
-function addComment(content,author,qc){
+function addComment(content,author,qc, e){
     axios.post('/comments/add',{
         content:content,
         author:author,
         quote_content:qc.trim()
     }).then(function(response){
-        console.log(response)
+        if(reponse ==='Not logged in'){
+            flash('Log in to add comments!')
+        }
+        else{
+            appendComment(content, response, $(e.target))
+        }
     })
 
 }
@@ -148,4 +172,16 @@ function flash(message){
         </p>
     </div>`
     $(html).insertAfter('NAV')
+}
+
+function appendComment(content,response, target){
+    let comments = target.parent().parent().parent().parent().parent().find('.comments');
+    comments.append(` <div class="container border rounded bg-light">
+    <blockquote class="blockquote">
+        ${content}
+        <footer class="blockquote-footer">
+            <cite title="Source Title"><a href="/poets/${response.data.id}" class='author'>${response.data.username}</a></cite>
+        </footer>
+    </blockquote>
+</div>`)
 }

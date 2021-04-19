@@ -44,7 +44,7 @@ hr.quote{
 .img-holder{
     position: relative;
     text-align: center;
-    height:70vh;
+    max-height:70vh;
     overflow-y:hidden;
     overflow-x:hidden;
 }
@@ -67,14 +67,11 @@ hr.quote{
     font-family: 'Marck Script', cursive;
     font-size:3em;
 }
-.push{
-    height:80px;
-}
-.push-log{
-    height:20vh;
-}
 .full{
     height:80vh;
+}
+.push{
+    height:150px;
 }
 
 .comments{
@@ -92,12 +89,33 @@ hr.quote{
     text-indent: 50px;
 }
 
-@media screen and (max-width: 540px){
-    #push{
-        height:150px
-    }
+#page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+#content-wrap {
+    padding-bottom: 20rem;    /* Footer height */
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    max-height: 25rem;
+}
+@media screen and (max-width: 450px){
     .qod blockquote p{
         font-size:1em;
+    }
+    .push{
+        height:420px;
+    }
+
+}
+@media screen and (max-width: 780px){
+    .qod blockquote p{
+        font-size:1.5em;
     }
 
 }

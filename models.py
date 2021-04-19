@@ -60,6 +60,14 @@ class Poet(db.Model):
         all_quotes.sort(key=date_time)
         return all_quotes
 
+    def serialize(self):
+        """Serialize into dict for json return"""
+
+        return{
+            "username":self.username,
+            "id":self.id
+        }
+
     @classmethod
     def signup(cls,username,password,email,image_url):
         """Hashes the password and creates a new poet account"""

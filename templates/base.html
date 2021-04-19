@@ -32,96 +32,96 @@
 {% set active_page = active_page|default('index') -%}
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">Axiomatic</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          {% for href, id, caption in navigation_bar %}
-          <li class="nav-item">
-                <a class="nav-link {% if id == active_page %} active{% endif %}" href="{{href}}">{{caption}}</a>
-              </li>
-          {% endfor %}
-      </ul>
-      <!-- <form class="d-flex" action='/search'>
-        <input class="form-control me-2" type="search" name='q' placeholder="Search authors" aria-label="Search" required>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form> -->
-      
-    </div>
-  </div>
-  {% if g.poet%}
-  <div class="nav-item">
-    <a href="/logout">Logout</a>
-  </div>
 
-
-  {% else%}
-  <div class="nav-item">
-    <a href="/login" class="nav-link">Login</a>
-  </div>
-  <div class="nav-item">
-    <a href="/signup" class="nav-link">Signup</a>
-  </div>
-  {% endif %}
-  
-</nav>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    {% for message in messages %}
-     <div class="container-fluid d-flex justify-content-center bg-primary" style='height:30px'>
-       <p class="mx-auto text-white">
-        {{message}}
-       </p>
-     </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-{%block content%}
-{%endblock %}
-{% if not no_push%}
-<div class="push"></div>
-{%endif%}
-
-<footer class="bg-dark text-center text-lg-start">
-  
-  <div class="container p-4">
+<div id="page-container">
+  <div id="content-wrap">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Axiomatic</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-lg-flex justify-content-between" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              {% for href, id, caption in navigation_bar %}
+              <li class="nav-item">
+                    <a class="nav-link {% if id == active_page %} active{% endif %}" href="{{href}}">{{caption}}</a>
+                  </li>
+              {% endfor %}
+              
+          </ul>
+          <div class="nav-item">
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
+      </div>
+      {% if g.poet%}
+     
     
-    <div class="row">
+    
+      {% else%}
+      <div class="nav-item">
+        <a href="/login" class="nav-link">Login</a>
+      </div>
+      <div class="nav-item">
+        <a href="/signup" class="nav-link">Signup</a>
+      </div>
+      {% endif %}
       
-      <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-        <h5 class=" text-light text-uppercase">Axiomatic</h5>
-
-        <p class="text-light">
-          Axiomatic is a project meant to promote intellectual, philosophical, and spiritual discussion. Without all the extras that come with social media. Expand your consciousness, learn, and share your deepest thoughts
-        </p>
-      </div>
-      <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-        <h5 class="text-uppercase text-light">More</h5>
-
-        <ul class="list-unstyled mb-0">
-          <li>
-            <a href="#!" class="text-light">Linkedin</a>
-          </li>
-          <li>
-            <a href="#!" class="text-light">GitHub Repo</a>
-          </li>
-          <li>
-            <a href="/about" class="text-light">About</a>
-          </li>
-          <li>
-            <a href="#!" class="text-light">I like music too</a>
-          </li>
-        </ul>
-      </div>
-  
-    </div>
- 
+    </nav>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+         <div class="container-fluid d-flex justify-content-center bg-primary" style='height:30px'>
+           <p class="mx-auto text-white">
+            {{message}}
+           </p>
+         </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {%block content%}
+    {%endblock %}
   </div>
-</footer>
+  <footer id='footer'class="bg-dark text-center text-lg-start">
+  
+    <div class="container p-4">
+      
+      <div class="row">
+        
+        <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+          <h5 class=" text-light text-uppercase">Axiomatic</h5>
+  
+          <p class="text-light">
+            Axiomatic is a project meant to promote intellectual, philosophical, and spiritual discussion. Without all the extras that come with social media. Expand your consciousness, learn, and share your deepest thoughts
+          </p>
+        </div>
+        <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+          <h5 class="text-uppercase text-light">More</h5>
+  
+          <ul class="list-unstyled mb-0">
+            <li>
+              <a href="https://www.linkedin.com/in/john-tettis/" class="text-light">Linkedin</a>
+            </li>
+            <li>
+              <a href="https://github.com/john-tettis/axiomatic" class="text-light">GitHub Repo</a>
+            </li>
+            <li>
+              <a href="/about" class="text-light">About</a>
+            </li>
+            <li>
+              <a href="https://studio.youtube.com/channel/UCBrhD4-eIKO7u50no3YICIw/videos/upload?filter=%5B%5D&sort=%7B%22columnType%22%3A%22date%22%2C%22sortOrder%22%3A%22DESCENDING%22%7D" class="text-light">I like music too</a>
+            </li>
+          </ul>
+        </div>
+    
+      </div>
+   
+    </div>
+  </footer>
+</div>
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
  integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
