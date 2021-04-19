@@ -49,6 +49,7 @@
             <a href="/account?f=shares" class="badge badge-secondary">My Shares</a>
         </div>
         <div class="container-fluid border">
+            {% if quotes %}
             <div class="row">
                 {% for quote in quotes|reverse %}
                 <div class="col-12 col-md-4">
@@ -56,6 +57,14 @@
                 </div>
                 {%endfor%}
             </div>
+            {% else%}
+            <div class="container-fluid d-flex justify-content-center">
+                <p class="lead">
+                    No quotes here!
+                </p>
+    
+            </div>
+            {%endif%}
         </div>
     </div>
 </div>
