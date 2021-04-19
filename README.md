@@ -1,3 +1,5 @@
-# Dont-Quote-Me
+# Axiomatic
 
-api link - http://quotes.rest/?ref=apilist.fun
+api link - https://zenquotes.io/
+
+heroku - https://axiomatic-quote.herokuapp.com/account
