@@ -23,4 +23,4 @@ Deployed app - https://axiomatic-quote.herokuapp.com/account
  
  ### API Notes
  
- I originally planned to use a quotes API that provided a quote ID, tag list, and category for each quote received from the API. THIs was unfortunately behind a paywall. THe restrictions of this project kept me to free APIs only. Hence zen quotes. Free to use, but significatnly less functionality. No search capability, no tags, categories, or IDS. In  the end, I worked around these limitations, and I truly think that the simplistic design of Axiomatic turned out for to be for the best. 
+ I originally planned to use a quotes API that provided a quote ID, tag list, and category for each quote received from the API. These features would have allowed for a tag feature, a recommendation algorithm, and a search capability. This was unfortunately behind a paywall. THe restrictions of this project kept me to free APIs only. Hence zen quotes. Free to use, but significatnly less functionality. No search capability, no tags, categories, or IDS. In  the end, I worked around these limitations, and I truly think that the simplistic design of Axiomatic turned out for to be for the best. 
