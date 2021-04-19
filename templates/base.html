@@ -50,23 +50,25 @@
               {% endfor %}
               
           </ul>
+          {% if g.poet%}
           <div class="nav-item">
             <a href="/logout">Logout</a>
           </div>
+          {% else%}
+          <div class="d-flex flex-column flex-lg-row">
+            <div class="nav-item">
+              <a href="/login" class="nav-link pl-0">Login</a>
+            </div>
+            <div class="nav-item">
+              <a href="/signup" class="nav-link pl-0">Signup</a>
+            </div>
+
+          </div>
+          
+          {% endif %}
         </div>
       </div>
-      {% if g.poet%}
-     
-    
-    
-      {% else%}
-      <div class="nav-item">
-        <a href="/login" class="nav-link">Login</a>
-      </div>
-      <div class="nav-item">
-        <a href="/signup" class="nav-link">Signup</a>
-      </div>
-      {% endif %}
+      
       
     </nav>
     {% with messages = get_flashed_messages() %}

@@ -49,7 +49,7 @@ hr.quote{
     overflow-x:hidden;
 }
 .anon{
-    height:100vh;
+    max-height:100vh;
 }
 .centered {
     position: absolute;
@@ -59,6 +59,8 @@ hr.quote{
 }
 .hero{
     background-color: rgba(19, 18, 73, 0.2);
+    padding:1em;
+    border-radius:2px;
 }
 .qod{
     height:80vh;
@@ -107,6 +109,9 @@ hr.quote{
 @media screen and (max-width: 450px){
     .qod blockquote p{
         font-size:1em;
+    }
+    .qod h1{
+        font-size:2em;
     }
     .push{
         height:420px;
