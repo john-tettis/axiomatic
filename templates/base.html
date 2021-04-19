@@ -24,14 +24,14 @@
 {% set navigation_bar = [
     ('/', 'home', 'Home'),
     ('/quotes', 'quotes', 'Quotes'),
-    ('/about/', 'about', 'About'),
+    ('/about', 'about', 'About'),
 ] -%}
 
 {% endif %}
 
 {% set active_page = active_page|default('index') -%}
 
-
+ 
 
 <div id="page-container">
   <div id="content-wrap">
