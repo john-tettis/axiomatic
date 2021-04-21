@@ -17,7 +17,7 @@ Deployed app - https://axiomatic-quote.herokuapp.com/account
 
 ## Getting it running
 
-If you want to run Axiomatic, first install Postgres and follow the setup procedures. Set up a venv in the Axiomatic directory ==highliight==
+If you want to run Axiomatic, first install Postgres and follow the setup procedures. Set up a venv in the Axiomatic directory     highlithgt
 
 
 
