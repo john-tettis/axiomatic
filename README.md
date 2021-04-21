@@ -1,13 +1,27 @@
 # Axiomatic
 
-api link - https://zenquotes.io/
+Axiomatic is a platform for sharing wisdom. Hundreds of thousands of quotes are available through the Zen Quotes API. Axiomatic is a python-flask app utilizing SQL-Alchemy and Postgresql.
 
 Deployed app - https://axiomatic-quote.herokuapp.com/account
-
-## What Is it?
-
-  Axiomatic is a platform for sharing wisdom. Hundreds of thousands of quotes are available through the Zen Quotes API, and anyone has the ability to share thier own axioms. Share your wisdom, gain some wisdom. Each quote is available to be commented on for discussion and discernment.
  
+
+
+
+## THird Party Tools and Libraries
+[Zen QUotes](https://zenquotes.io/)
+[jquery](https://jquery.com/)
+[Axios](https://github.com/axios/axios)
+[bootstrap](https://getbootstrap.com/)
+[Postgresql](https://www.postgresql.org/)
+- All python dependencies are included in requirements.txt
+
+## Getting it running
+
+If you want to run Axiomatic, first install Postgres and follow the setup procedures. Set up a venv in the Axiomatic directory ==highliight==
+
+
+
+  
 ## Features
  - **Browse** -Users can Browser through philosophiocal quotes randomly retreived from the API. THey can also browse User quotes.
  - **Post** -Users can post their own quotes to be seen by all other users.
