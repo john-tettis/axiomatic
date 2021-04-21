@@ -17,7 +17,13 @@ Deployed app - https://axiomatic-quote.herokuapp.com/account
 
 ## Getting it running
 
-If you want to run Axiomatic, first install Postgres and follow the setup procedures. Set up a venv in the Axiomatic directory >highlithgt
+If you want to run Axiomatic, first install Postgres and follow the setup procedures. Youll need to create a new database for reference, run 'createdb <databse_name>' in the terminal. Make sure to change the app.config['SQL_ALCHEMY_DATABSE_URI] in app.py.
+
+Set up a virtual enviornment in the Axiomatic directory by running `python -m venv venv` followed by `source venv/scipts/activate` or `source venv/bin/activate` depending on your system's OS. Run 'pip install -r requirements.txt' to install all dependencies to the virtual enviornment, and finally run `flask run` to launch the app to localhost:5000. 
+
+## Configuring
+
+The colors.scss file is used to overwrite the bootsrap color variables in order to customize Axiomatic beyond a simple bootsrapped-site. I used [This](https://lingtalfi.com/bootstrap4-color-generator) awesome sass generator tool.
 
 
 
